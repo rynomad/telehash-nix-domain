@@ -33,18 +33,18 @@ exports.mesh = function(mesh, cbExt)
 
   
   tp.server = net.createServer(function connect(sock) {
-    console.log("got domain socket")
+    //console.log("got domain socket")
     tp.pipe(false, {
       type: 'nix-domain',
       fd: sock._handle.fd
     }, function(pipe) {
-      console.log("pipe?")
+      //console.log("pipe?")
       pipe.use(sock);
     });
   });
 
   tp.server.on('error', function(err) {
-    console.log(err)
+    //console.log(err)
   });
 
   // turn a path into a pipe
@@ -127,16 +127,16 @@ exports.mesh = function(mesh, cbExt)
 
   // enable discovery mode, broadcast this packet
   tp.discover = function(opts, cbDisco){
-    console.log("nix domain discover")
+    //console.log("nix domain discover")
     var meshes = fs.readdirSync(base_dir).filter((hn) =>  hn != mesh.hashname)
 
     var json = {type:'hn',hn:mesh.keys};
     var buf = lob.encode({json:json});
 
     meshes.forEach((hn) => {
-      console.log("make pipe", hn)
+      //console.log("make pipe", hn)
       var socket = net.createConnection(base_dir + hn, () => {
-        console.log("socket up")
+        //console.log("socket up")
         tp.pipe(false, {type:'nix-domain', fd: socket._handle.fd}, function(pipe){
           //console.log("discovered pipe")
           pipe.use(socket)
